@@ -1,8 +1,10 @@
 package infodation.kikker.service;
 
 import infodation.kikker.domain.Authority;
+import infodation.kikker.domain.Organization;
 import infodation.kikker.domain.User;
 import infodation.kikker.repository.AuthorityRepository;
+import infodation.kikker.repository.OrganizationRepository;
 import infodation.kikker.config.Constants;
 import infodation.kikker.repository.UserRepository;
 import infodation.kikker.security.AuthoritiesConstants;
@@ -39,11 +41,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
+    
+    private final OrganizationRepository organizationRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, OrganizationRepository organizationRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -125,6 +130,16 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+        
+        if (userDTO.getOrgIds() != null) {
+            Set<Organization> organizations = userDTO.getOrgIds().stream()
+                .map(organizationRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+            user.setOrganization(organizations);;
+        }
+        
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
@@ -183,6 +198,16 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
+                
+                //update org list
+                Set<Organization> managedOrganization = user.getOrganization();
+                managedOrganization.clear();
+                userDTO.getOrgIds().stream()
+                    .map(organizationRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .forEach(managedOrganization::add);
+                
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
@@ -217,7 +242,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneWithAuthoritiesByLogin(login);
+    	Optional<User> u = userRepository.findOneWithOrganizationByLogin(login);
+    	Optional<User> u2 = userRepository.findOneWithAuthoritiesByLogin(login);
+    	u2.get().setOrganization(u.get().getOrganization());
+        return u2;
     }
 
     @Transactional(readOnly = true)
@@ -227,8 +255,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    	Optional<User> u = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithOrganizationByLogin);
+    	Optional<User> u2 = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    	u2.get().setOrganization(u.get().getOrganization());
+        return u2;//SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
+    
 
     /**
      * Not activated users should be automatically deleted after 3 days.
@@ -249,5 +281,12 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+    
+    /**
+     * @return a list of all the organization
+     */
+    public List<Organization> getOrganization() {
+        return organizationRepository.findAll().stream().collect(Collectors.toList());
     }
 }

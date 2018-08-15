@@ -2,6 +2,8 @@ package infodation.kikker.web.rest;
 
 import infodation.kikker.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+
+import infodation.kikker.domain.Organization;
 import infodation.kikker.domain.User;
 import infodation.kikker.repository.UserRepository;
 import infodation.kikker.security.AuthoritiesConstants;
@@ -85,7 +87,7 @@ public class UserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
      */
-    @PostMapping("/users")
+	@PostMapping("/users")
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
@@ -157,6 +159,16 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public List<String> getAuthorities() {
         return userService.getAuthorities();
+    }
+    
+    /**
+     * @return a string list of the all of the org
+     */
+    @GetMapping("/users/organization")
+    @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
+    public List<Organization> getOrganization() {
+        return userService.getOrganization();
     }
 
     /**

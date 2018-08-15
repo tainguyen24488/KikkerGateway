@@ -3,6 +3,7 @@ package infodation.kikker.service.dto;
 import infodation.kikker.config.Constants;
 
 import infodation.kikker.domain.Authority;
+import infodation.kikker.domain.Organization;
 import infodation.kikker.domain.User;
 
 import javax.validation.constraints.Email;
@@ -52,6 +53,10 @@ public class UserDTO {
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+    
+    private Set<String> orgs;
+    
+    private Set<Long> orgIds;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -73,9 +78,23 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        this.orgs = user.getOrganization().stream()
+                .map(Organization::getName)
+                .collect(Collectors.toSet());
+        this.orgIds = user.getOrganization().stream()
+                .map(Organization::getId)
+                .collect(Collectors.toSet());
     }
 
-    public Long getId() {
+    public Set<Long> getOrgIds() {
+		return orgIds;
+	}
+
+	public void setOrgIds(Set<Long> orgIds) {
+		this.orgIds = orgIds;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -175,7 +194,15 @@ public class UserDTO {
         return authorities;
     }
 
-    public void setAuthorities(Set<String> authorities) {
+    public Set<String> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(Set<String> orgs) {
+		this.orgs = orgs;
+	}
+
+	public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
     }
 

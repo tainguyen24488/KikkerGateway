@@ -103,6 +103,15 @@
                         <option *ngFor="let authority of authorities" [value]="authority">{{authority}}</option>
                     </select>
                 </div>
+                
+                <!-- organiztion -->
+                <div class="form-group">
+                    <label>Organization</label>
+                    <select class="form-control" multiple name="orgs" [(ngModel)]="user.orgIds">
+                        <option *ngFor="let org of orgs" [value]="org.id">{{org.name}}</option>
+                    </select>
+                </div>
+                
             </div>
             <div>
                 <button type="button" class="btn btn-secondary" (click)="previousState()">

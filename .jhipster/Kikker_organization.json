@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "zipcode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "house_nr",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "house_nr_ext",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180814080727",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "kikker_organization",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

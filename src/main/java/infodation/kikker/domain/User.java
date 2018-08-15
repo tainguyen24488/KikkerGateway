@@ -91,6 +91,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+    
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "kikker_user_organization",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id")})
+
+    @BatchSize(size = 20)
+    private Set<Organization> organization = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -195,6 +205,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+    
+    public Set<Organization> getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Set<Organization> organization) {
+        this.organization = organization;
     }
 
     @Override

@@ -11,6 +11,7 @@ export class UserMgmtUpdateComponent implements OnInit {
     user: User;
     languages: any[];
     authorities: any[];
+    orgs: any[];
     isSaving: boolean;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
@@ -21,8 +22,13 @@ export class UserMgmtUpdateComponent implements OnInit {
             this.user = user.body ? user.body : user;
         });
         this.authorities = [];
+        this.orgs = [];
         this.userService.authorities().subscribe(authorities => {
             this.authorities = authorities;
+        });
+        // orgs
+        this.userService.organization().subscribe(organization => {
+            this.orgs = organization;
         });
     }
 
@@ -33,6 +39,7 @@ export class UserMgmtUpdateComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.user.id !== null) {
+        console.log(this.user);
             this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
         } else {
             this.user.langKey = 'en';
