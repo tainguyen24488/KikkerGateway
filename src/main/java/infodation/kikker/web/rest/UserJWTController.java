@@ -2,6 +2,8 @@ package infodation.kikker.web.rest;
 
 import infodation.kikker.security.jwt.JWTConfigurer;
 import infodation.kikker.security.jwt.TokenProvider;
+import infodation.kikker.service.UserService;
+import infodation.kikker.service.dto.UserDTO;
 import infodation.kikker.web.rest.vm.LoginVM;
 
 import com.codahale.metrics.annotation.Timed;
@@ -16,8 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Optional;
 
+import javax.validation.Valid;
 /**
  * Controller to authenticate users.
  */
@@ -28,10 +31,13 @@ public class UserJWTController {
     private final TokenProvider tokenProvider;
 
     private final AuthenticationManager authenticationManager;
+    
+    private final UserService userService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @PostMapping("/authenticate")
@@ -44,7 +50,11 @@ public class UserJWTController {
         Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
-        String jwt = tokenProvider.createToken(authentication, rememberMe);
+        
+        Optional<UserDTO> u = userService.getUserWithAuthorities().map(UserDTO::new);
+        
+        
+        String jwt = tokenProvider.createToken(authentication, rememberMe, u);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);

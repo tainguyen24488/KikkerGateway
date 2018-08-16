@@ -1,0 +1,41 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipName": "fk1",
+            "otherEntityName": "kikker_function",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "fk1"
+        },
+        {
+            "relationshipName": "fk2",
+            "otherEntityName": "jhi_authority",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "fk2"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "authority_id",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "function_id",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180816080329",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "kikker_authority_function",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

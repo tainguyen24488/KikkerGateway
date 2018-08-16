@@ -39,7 +39,6 @@ export class UserMgmtUpdateComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.user.id !== null) {
-        console.log(this.user);
             this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
         } else {
             this.user.langKey = 'en';

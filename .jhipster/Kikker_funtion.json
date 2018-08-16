@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "actived",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180816065938",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "kikker_funtion",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

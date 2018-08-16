@@ -2,6 +2,7 @@ package infodation.kikker.security.jwt;
 
 import io.github.jhipster.config.JHipsterProperties;
 
+import java.io.Console;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import infodation.kikker.service.dto.UserDTO;
 import io.jsonwebtoken.*;
 
 @Component
@@ -24,6 +26,8 @@ public class TokenProvider {
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
+    
+    private static final String ORGANIZATION_KEY = "org";
 
     private final Base64.Encoder encoder = Base64.getEncoder();
 
@@ -51,11 +55,10 @@ public class TokenProvider {
                 .getTokenValidityInSecondsForRememberMe();
     }
 
-	public String createToken(Authentication authentication, boolean rememberMe) {
+	public String createToken(Authentication authentication, boolean rememberMe, Optional<UserDTO> u) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
-        
         
 
         long now = (new Date()).getTime();
@@ -69,6 +72,7 @@ public class TokenProvider {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .claim(ORGANIZATION_KEY, u.get().getOrgs())
             .signWith(SignatureAlgorithm.HS512, secretKey)
             .setExpiration(validity)
             .compact();
