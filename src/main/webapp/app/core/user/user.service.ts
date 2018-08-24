@@ -36,7 +36,7 @@ export class UserService {
     authorities(): Observable<string[]> {
         return this.http.get<string[]>(SERVER_API_URL + 'api/users/authorities');
     }
-    
+
     organization(): Observable<string[]> {
         return this.http.get<string[]>(SERVER_API_URL + 'api/users/organization');
     }

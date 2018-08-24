@@ -14,9 +14,9 @@
                 <th jhiSortBy="login"><span>Login</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th></th>
-                <th><span>Profiles</span></th>
+                <th><span>Role</span></th>
                 
-                <th><span>Org</span></th>
+                <th><span>Reseller</span></th>
                 
                 <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
                 <th jhiSortBy="lastModifiedBy"><span>Last Modified By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -45,9 +45,7 @@
                 
                 
                  <td>
-                    <div *ngFor="let org of user.orgs">
-                        <span class="badge badge-info">{{ org }}</span>
-                    </div>
+                        <span class="badge badge-info">{{ user.org }}</span>
                 </td>
                 
                 

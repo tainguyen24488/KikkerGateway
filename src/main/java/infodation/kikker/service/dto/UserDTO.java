@@ -9,8 +9,11 @@ import infodation.kikker.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,11 +57,37 @@ public class UserDTO {
 
     private Set<String> authorities;
     
-    private Set<String> orgs;
+    private Set<String> functions;
     
-    private Set<Long> orgIds;
+    public Set<String> getFunctions() {
+		return functions;
+	}
 
-    public UserDTO() {
+	public void setFunctions(Set<String> functions) {
+		this.functions = functions;
+	}
+
+	private String org;
+    
+    private Long orgId;
+
+    public String getOrg() {
+		return org;
+	}
+
+	public void setOrg(String org) {
+		this.org = org;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
+	public UserDTO() {
         // Empty constructor needed for Jackson.
     }
 
@@ -78,21 +107,26 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
-        this.orgs = user.getOrganization().stream()
-                .map(Organization::getName)
-                .collect(Collectors.toSet());
-        this.orgIds = user.getOrganization().stream()
-                .map(Organization::getId)
-                .collect(Collectors.toSet());
+        
+      //get list functions
+        Set<String> functions = new HashSet<>();
+        user.getAuthorities().forEach(au -> au.getFunctions().forEach(f -> 
+	        {
+	    		functions.add(f.getCode());
+	        }
+        ));
+        this.functions = functions;
+        if(user.getOrganization() != null && user.getOrganization().size() > 0) {
+        	this.org = user.getOrganization().stream()
+                    .map(Organization::getName)
+                    .findFirst().get();
+            this.orgId = user.getOrganization().stream()
+                    .map(Organization::getId)
+                    .findFirst().get();
+        }
+        
     }
 
-    public Set<Long> getOrgIds() {
-		return orgIds;
-	}
-
-	public void setOrgIds(Set<Long> orgIds) {
-		this.orgIds = orgIds;
-	}
 
 	public Long getId() {
         return id;
@@ -193,14 +227,6 @@ public class UserDTO {
     public Set<String> getAuthorities() {
         return authorities;
     }
-
-    public Set<String> getOrgs() {
-		return orgs;
-	}
-
-	public void setOrgs(Set<String> orgs) {
-		this.orgs = orgs;
-	}
 
 	public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;

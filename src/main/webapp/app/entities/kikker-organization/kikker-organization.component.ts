@@ -23,20 +23,25 @@ export class Kikker_organizationComponent implements OnInit, OnDestroy {
         private principal: Principal
     ) {}
 
-    loadAll() {
-        this.kikker_organizationService.query().subscribe(
-            (res: HttpResponse<IKikker_organization[]>) => {
-                this.kikker_organizations = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+    loadAll(userId: number) {
+        this.kikker_organizationService
+            .query({
+                userId: userId
+            })
+            .subscribe(
+                (res: HttpResponse<IKikker_organization[]>) => {
+                    this.kikker_organizations = res.body;
+                },
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     ngOnInit() {
-        this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
+            this.loadAll(account.id);
         });
+
         this.registerChangeInKikker_organizations();
     }
 

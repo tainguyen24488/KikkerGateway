@@ -5,7 +5,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Function.
@@ -23,9 +25,21 @@ public class Function implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+    
+    @NotNull
+    @Column(name = "code", nullable = false)
+    private String code;
 
-    @Column(name = "actived")
-    private Boolean actived;
+    public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@Column(name = "activated")
+    private Boolean activated;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -49,17 +63,12 @@ public class Function implements Serializable {
         this.name = name;
     }
 
-    public Boolean isActived() {
-        return actived;
+    public Boolean isactivated() {
+        return activated;
     }
 
-    public Function actived(Boolean actived) {
-        this.actived = actived;
-        return this;
-    }
-
-    public void setActived(Boolean actived) {
-        this.actived = actived;
+    public void setactivated(Boolean activated) {
+        this.activated = activated;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -88,7 +97,7 @@ public class Function implements Serializable {
         return "Function{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", actived='" + isActived() + "'" +
+            ", activated='" + isactivated() + "'" +
             "}";
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import infodation.kikker.domain.Authority;
+import infodation.kikker.domain.Function;
 import infodation.kikker.service.dto.UserDTO;
 import io.jsonwebtoken.*;
 
@@ -27,7 +29,9 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     
-    private static final String ORGANIZATION_KEY = "org";
+    private static final String ORGANIZATION_KEY = "reseller";
+    
+    private static final String FUNCTION_KEY = "functions";
 
     private final Base64.Encoder encoder = Base64.getEncoder();
 
@@ -55,7 +59,7 @@ public class TokenProvider {
                 .getTokenValidityInSecondsForRememberMe();
     }
 
-	public String createToken(Authentication authentication, boolean rememberMe, Optional<UserDTO> u) {
+	public String createToken(Authentication authentication, boolean rememberMe, Optional<infodation.kikker.domain.User> user, Optional<UserDTO> userDto) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
@@ -68,11 +72,23 @@ public class TokenProvider {
         } else {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
-
+        //get list functions
+        StringBuilder functions = new StringBuilder();
+        user.get().getAuthorities().forEach(au -> au.getFunctions().forEach(f -> 
+        {
+        	if(functions.length() > 0) {
+        		functions.append("," + f.getCode());
+        	}
+        	else {
+        		functions.append(f.getCode());
+        	}
+        }
+        ));
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
-            .claim(ORGANIZATION_KEY, u.get().getOrgs())
+            .claim(ORGANIZATION_KEY, userDto.get().getOrg())
+            .claim(FUNCTION_KEY, functions.toString())
             .signWith(SignatureAlgorithm.HS512, secretKey)
             .setExpiration(validity)
             .compact();

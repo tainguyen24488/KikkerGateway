@@ -18,9 +18,7 @@ export class UserMgmtUpdateComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.route.data.subscribe(({ user }) => {
-            this.user = user.body ? user.body : user;
-        });
+
         this.authorities = [];
         this.orgs = [];
         this.userService.authorities().subscribe(authorities => {
@@ -29,6 +27,13 @@ export class UserMgmtUpdateComponent implements OnInit {
         // orgs
         this.userService.organization().subscribe(organization => {
             this.orgs = organization;
+            this.route.data.subscribe(({ user }) => {
+                this.user = user.body ? user.body : user;
+
+                if (!this.user.orgId) {
+                    this.user.orgId = this.orgs[0].id;
+                }
+            });
         });
     }
 

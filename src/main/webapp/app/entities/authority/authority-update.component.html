@@ -1,18 +1,13 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-kikker-funtion-heading">Create or edit a Kikker Funtion</h2>
+            <h2 id="jhi-authority-heading">Create or edit a Authority</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!kikker_funtion.id">
-                    <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="kikker_funtion.id" readonly />
-                </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
-                        [(ngModel)]="kikker_funtion.name" required/>
+                        [(ngModel)]="authority.name" required/>
                     <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.name?.errors?.required">
@@ -20,10 +15,13 @@
                         </small>
                     </div>
                 </div>
+                
+                <!-- function -->
                 <div class="form-group">
-                    <label class="form-control-label" for="field_actived">Activated</label>
-                    <input type="checkbox" class="form-control" name="activated" id="field_actived"
-                        [(ngModel)]="kikker_funtion.activated" />
+                    <label>Function</label>
+                    <select class="form-control" multiple name="functions" [(ngModel)]="authority.functionIds">
+                        <option *ngFor="let function of functions" [value]="function.id">{{function.name}}</option>
+                    </select>
                 </div>
 
             </div>

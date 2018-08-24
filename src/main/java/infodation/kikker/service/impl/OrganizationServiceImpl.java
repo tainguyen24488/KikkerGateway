@@ -2,8 +2,12 @@ package infodation.kikker.service.impl;
 
 import infodation.kikker.service.OrganizationService;
 import infodation.kikker.domain.Organization;
+import infodation.kikker.domain.User;
 import infodation.kikker.domain.Organization;
 import infodation.kikker.repository.OrganizationRepository;
+import infodation.kikker.repository.UserRepository;
+import infodation.kikker.security.AuthoritiesConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +27,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final Logger log = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     private final OrganizationRepository OrganizationRepository;
+    
+    private final UserRepository userRepository;
 
-    public OrganizationServiceImpl(OrganizationRepository OrganizationRepository) {
+    public OrganizationServiceImpl(OrganizationRepository OrganizationRepository, UserRepository userRepository) {
         this.OrganizationRepository = OrganizationRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -46,12 +53,16 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Organization> findAll() {
+    public List<Organization> findAll(Long userId) {
         log.debug("Request to get all Organizations");
-        return OrganizationRepository.findAll();
+        //get userRole by Id
+        User u = userRepository.findById(userId).get();
+        if(u != null && u.getAuthorities().stream().filter(o -> o.getName().equals(AuthoritiesConstants.ADMIN)).findFirst().isPresent()) {
+        	return OrganizationRepository.findAll();
+        }
+        return OrganizationRepository.findAllByUserId(userId);
     }
-
-
+    
     /**
      * Get one Organization by id.
      *

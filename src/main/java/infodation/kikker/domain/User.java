@@ -95,9 +95,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-        name = "kikker_user_organization",
+        name = "kikker_user_reseller",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "org_id", referencedColumnName = "id")})
+        inverseJoinColumns = {@JoinColumn(name = "reseller_id", referencedColumnName = "id")})
 
     @BatchSize(size = 20)
     private Set<Organization> organization = new HashSet<>();

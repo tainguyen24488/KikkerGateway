@@ -84,9 +84,9 @@ public class OrganizationResource {
      */
     @GetMapping("/kikker-organizations")
     @Timed
-    public List<Organization> getAllOrganizations() {
+    public List<Organization> getAllOrganizations(@RequestParam(value = "userId") Long userId) {
         log.debug("REST request to get all Organizations");
-        return OrganizationService.findAll();
+        return OrganizationService.findAll(userId);
     }
 
     /**

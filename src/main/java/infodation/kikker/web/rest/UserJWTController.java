@@ -1,5 +1,6 @@
 package infodation.kikker.web.rest;
 
+import infodation.kikker.domain.User;
 import infodation.kikker.security.jwt.JWTConfigurer;
 import infodation.kikker.security.jwt.TokenProvider;
 import infodation.kikker.service.UserService;
@@ -51,10 +52,11 @@ public class UserJWTController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
         
-        Optional<UserDTO> u = userService.getUserWithAuthorities().map(UserDTO::new);
+        Optional<User> user = userService.getUserWithAuthorities();
+        Optional<UserDTO> userDto = user.map(UserDTO::new);
         
         
-        String jwt = tokenProvider.createToken(authentication, rememberMe, u);
+        String jwt = tokenProvider.createToken(authentication, rememberMe, user, userDto);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);

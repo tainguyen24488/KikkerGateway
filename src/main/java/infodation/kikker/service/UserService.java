@@ -131,13 +131,11 @@ public class UserService {
             user.setAuthorities(authorities);
         }
         
-        if (userDTO.getOrgIds() != null) {
-            Set<Organization> organizations = userDTO.getOrgIds().stream()
-                .map(organizationRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
-            user.setOrganization(organizations);;
+        if (userDTO.getOrgId() != null && userDTO.getOrgId() > 0) {
+            Organization organization = organizationRepository.findById(userDTO.getOrgId()).get();
+            HashSet<Organization> orgs = new HashSet<Organization>();
+            orgs.add(organization);
+            user.setOrganization(orgs);
         }
         
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
@@ -200,13 +198,13 @@ public class UserService {
                     .forEach(managedAuthorities::add);
                 
                 //update org list
-                Set<Organization> managedOrganization = user.getOrganization();
-                managedOrganization.clear();
-                userDTO.getOrgIds().stream()
-                    .map(organizationRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .forEach(managedOrganization::add);
+                if(userDTO.getOrgId() != null && userDTO.getOrgId() > 0) {
+                	Set<Organization> managedOrganization = user.getOrganization();
+                    managedOrganization.clear();
+                    Organization org = organizationRepository.findById(userDTO.getOrgId()).get();
+                    managedOrganization.add(org);
+                }
+                
                 
                 log.debug("Changed Information for User: {}", user);
                 return user;

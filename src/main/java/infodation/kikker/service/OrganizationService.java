@@ -23,7 +23,7 @@ public interface OrganizationService {
      *
      * @return the list of entities
      */
-    List<Organization> findAll();
+    List<Organization> findAll(Long userId);
 
 
     /**

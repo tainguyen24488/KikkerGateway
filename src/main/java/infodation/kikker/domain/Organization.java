@@ -4,20 +4,26 @@ package infodation.kikker.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.BatchSize;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Kikker_organization.
  */
 @Entity
-@Table(name = "kikker_organization")
+@Table(name = "kikker_reseller")
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -25,16 +31,34 @@ public class Organization implements Serializable {
     private String name;
 
     @NotNull
-    @Column(name = "zipcode", nullable = false)
+    @Column(name = "contact_zipcode", nullable = false)
     private String zipcode;
 
-    @Column(name = "house_nr")
+    @Column(name = "contact_house_number")
     private Integer house_nr;
 
-    @Column(name = "house_nr_ext")
+    @Column(name = "contact_house_number_ext")
     private String house_nr_ext;
+    
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "kikker_user_reseller",
+        joinColumns = {@JoinColumn(name = "reseller_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @BatchSize(size = 20)
+    private Set<User> users = new HashSet<>();
+
+    public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -121,9 +145,9 @@ public class Organization implements Serializable {
         return "Kikker_organization{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", zipcode='" + getZipcode() + "'" +
-            ", house_nr=" + getHouse_nr() +
-            ", house_nr_ext='" + getHouse_nr_ext() + "'" +
+//            ", zipcode='" + getZipcode() + "'" +
+//            ", house_nr=" + getHouse_nr() +
+//            ", house_nr_ext='" + getHouse_nr_ext() + "'" +
             "}";
     }
 }
