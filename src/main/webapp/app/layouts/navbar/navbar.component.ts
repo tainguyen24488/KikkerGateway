@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    functions: any[];
 
     constructor(
         private loginService: LoginService,
@@ -43,6 +44,12 @@ export class NavbarComponent implements OnInit {
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
+    }
+
+    isResources(name: string) {
+        this.functions = this.principal.isResources();
+        let result = this.functions.indexOf(name) > -1;
+        return result;
     }
 
     login() {

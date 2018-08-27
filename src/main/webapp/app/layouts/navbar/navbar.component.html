@@ -30,20 +30,20 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li>
+                    <li *ngIf="isResources('ResellerList')">
                         <a class="dropdown-item" routerLink="kikker-organization" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Kikker Reseller</span>
                         </a>
                     </li>
                     
-                    <li>
+                    <li *ngIf="isResources('FunctionList')">
                         <a class="dropdown-item" routerLink="kikker-funtion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Kikker Funtion</span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                    <li *ngIf="isResources('AuthorityList')">
                         <a class="dropdown-item" routerLink="authority" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Authority</span>

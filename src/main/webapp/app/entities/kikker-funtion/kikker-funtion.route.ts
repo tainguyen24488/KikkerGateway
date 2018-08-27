@@ -20,10 +20,6 @@ export class Kikker_funtionResolve implements Resolve<IKikker_funtion> {
     constructor(private service: Kikker_funtionService, private principal: Principal) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        this.principal.identity().then(account => {
-            console.log(account);
-        });
-
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
             return this.service.find(id).pipe(map((kikker_funtion: HttpResponse<Kikker_funtion>) => kikker_funtion.body));

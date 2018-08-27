@@ -88,6 +88,10 @@ export class Principal {
         return this.authenticated;
     }
 
+    isResources(): any[] {
+        return this.userIdentity.functions;
+    }
+
     isIdentityResolved(): boolean {
         return this.userIdentity !== undefined;
     }
