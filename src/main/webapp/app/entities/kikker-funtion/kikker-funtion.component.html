@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Kikker Funtions</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-kikker-funtion" [routerLink]="['/kikker-funtion/new']">
+        <button *ngIf="isAccessed('FunctionInsert')" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-kikker-funtion" [routerLink]="['/kikker-funtion/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Kikker Funtion
@@ -33,13 +33,13 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button type="submit"
+                        <button *ngIf="isAccessed('FunctionUpdate')" type="submit"
                                 [routerLink]="['/kikker-funtion', kikker_funtion.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *ngIf="isAccessed('FunctionDelete')" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'kikker-funtion/'+ kikker_funtion.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

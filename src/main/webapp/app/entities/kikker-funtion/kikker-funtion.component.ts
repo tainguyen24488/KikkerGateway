@@ -52,6 +52,10 @@ export class Kikker_funtionComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe('kikker_funtionListModification', response => this.loadAll());
     }
 
+    isAccessed(functionName: string) {
+        return this.principal.isAccessed(functionName);
+    }
+
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }

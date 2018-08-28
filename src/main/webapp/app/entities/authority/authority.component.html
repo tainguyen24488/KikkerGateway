@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Authorities</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-authority" [routerLink]="['/authority/new']">
+        <button *ngIf="isAccessed('AuthorityInsert')" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-authority" [routerLink]="['/authority/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Authority
@@ -35,13 +35,13 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button type="submit"
+                        <button *ngIf="isAccessed('AuthorityUpdate')" type="submit"
                                 [routerLink]="['/authority', authority.name, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *ngIf="isAccessed('AuthorityDelete')" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'authority/'+ authority.name + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

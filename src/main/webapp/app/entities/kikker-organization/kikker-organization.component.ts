@@ -57,6 +57,10 @@ export class Kikker_organizationComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe('kikker_organizationListModification', response => this.loadAll());
     }
 
+    isAccessed(functionName: string) {
+        return this.principal.isAccessed(functionName);
+    }
+
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }

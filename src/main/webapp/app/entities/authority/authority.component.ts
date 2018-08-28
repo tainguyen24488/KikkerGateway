@@ -52,6 +52,10 @@ export class AuthorityComponent implements OnInit, OnDestroy {
         this.eventSubscriber = this.eventManager.subscribe('authorityListModification', response => this.loadAll());
     }
 
+    isAccessed(functionName: string) {
+        return this.principal.isAccessed(functionName);
+    }
+
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }

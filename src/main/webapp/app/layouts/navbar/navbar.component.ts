@@ -46,10 +46,8 @@ export class NavbarComponent implements OnInit {
         return this.principal.isAuthenticated();
     }
 
-    isResources(name: string) {
-        this.functions = this.principal.isResources();
-        let result = this.functions.indexOf(name) > -1;
-        return result;
+    isAccessed(functionName: string) {
+        return this.principal.isAccessed(functionName);
     }
 
     login() {

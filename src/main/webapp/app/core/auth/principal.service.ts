@@ -88,8 +88,10 @@ export class Principal {
         return this.authenticated;
     }
 
-    isResources(): any[] {
-        return this.userIdentity.functions;
+    isAccessed(functionName: string): boolean {
+        let functions = this.userIdentity.functions;
+        if (functions && functions.length > 0) return functions.indexOf(functionName) > -1;
+        return false;
     }
 
     isIdentityResolved(): boolean {
