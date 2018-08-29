@@ -30,7 +30,7 @@ export const authorityRoute: Routes = [
         path: 'authority',
         component: AuthorityComponent,
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Authorities'
         },
         canActivate: [UserRouteAccessService]
@@ -42,7 +42,7 @@ export const authorityRoute: Routes = [
             authority: AuthorityResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Authorities'
         },
         canActivate: [UserRouteAccessService]
@@ -54,7 +54,7 @@ export const authorityRoute: Routes = [
             authority: AuthorityResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Authorities'
         },
         canActivate: [UserRouteAccessService]
@@ -66,7 +66,7 @@ export const authorityRoute: Routes = [
             authority: AuthorityResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Authorities'
         },
         canActivate: [UserRouteAccessService]
@@ -81,7 +81,7 @@ export const authorityPopupRoute: Routes = [
             authority: AuthorityResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Authorities'
         },
         canActivate: [UserRouteAccessService],

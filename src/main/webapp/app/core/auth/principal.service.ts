@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { AccountService } from './account.service';
+import { ROLEADMIN } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class Principal {
@@ -27,6 +28,10 @@ export class Principal {
 
         for (let i = 0; i < authorities.length; i++) {
             if (this.userIdentity.authorities.includes(authorities[i])) {
+                return true;
+            }
+            //custom for functions
+            if (this.userIdentity.functions.includes(authorities[i])) {
                 return true;
             }
         }
@@ -89,6 +94,9 @@ export class Principal {
     }
 
     isAccessed(functionName: string): boolean {
+        if (this.userIdentity.authorities.indexOf(ROLEADMIN) > -1) {
+            return true;
+        }
         let functions = this.userIdentity.functions;
         if (functions && functions.length > 0) return functions.indexOf(functionName) > -1;
         return false;

@@ -33,7 +33,7 @@ export const kikker_funtionRoute: Routes = [
         path: 'kikker-funtion',
         component: Kikker_funtionComponent,
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Kikker_funtions'
         },
         canActivate: [UserRouteAccessService]
@@ -45,7 +45,7 @@ export const kikker_funtionRoute: Routes = [
             kikker_funtion: Kikker_funtionResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Kikker_funtions'
         },
         canActivate: [UserRouteAccessService]
@@ -57,7 +57,7 @@ export const kikker_funtionRoute: Routes = [
             kikker_funtion: Kikker_funtionResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Kikker_funtions'
         },
         canActivate: [UserRouteAccessService]
@@ -69,7 +69,7 @@ export const kikker_funtionRoute: Routes = [
             kikker_funtion: Kikker_funtionResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Kikker_funtions'
         },
         canActivate: [UserRouteAccessService]
@@ -84,7 +84,7 @@ export const kikker_funtionPopupRoute: Routes = [
             kikker_funtion: Kikker_funtionResolve
         },
         data: {
-            authorities: ['BO_RESELLER', 'ROLE_ADMIN'],
+            authorities: ['ROLE_USER', 'ROLE_ADMIN'],
             pageTitle: 'Kikker_funtions'
         },
         canActivate: [UserRouteAccessService],

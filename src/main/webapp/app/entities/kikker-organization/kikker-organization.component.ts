@@ -15,6 +15,7 @@ export class Kikker_organizationComponent implements OnInit, OnDestroy {
     kikker_organizations: IKikker_organization[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    userId: number;
 
     constructor(
         private kikker_organizationService: Kikker_organizationService,
@@ -39,7 +40,8 @@ export class Kikker_organizationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.principal.identity().then(account => {
             this.currentAccount = account;
-            this.loadAll(account.id);
+            this.userId = account.id;
+            this.loadAll(this.userId);
         });
 
         this.registerChangeInKikker_organizations();
@@ -54,7 +56,7 @@ export class Kikker_organizationComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInKikker_organizations() {
-        this.eventSubscriber = this.eventManager.subscribe('kikker_organizationListModification', response => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('kikker_organizationListModification', response => this.loadAll(this.userId));
     }
 
     isAccessed(functionName: string) {

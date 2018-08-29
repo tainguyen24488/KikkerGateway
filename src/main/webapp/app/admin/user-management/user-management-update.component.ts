@@ -33,6 +33,7 @@ export class UserMgmtUpdateComponent implements OnInit {
                 if (!this.user.orgId) {
                     this.user.orgId = this.orgs[0].id;
                 }
+                console.log(this.user, 'this.user');
             });
         });
     }

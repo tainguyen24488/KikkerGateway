@@ -133,6 +133,10 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         );
     }
 
+    isAccessed(functionName: string) {
+        return this.principal.isAccessed(functionName);
+    }
+
     private onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');

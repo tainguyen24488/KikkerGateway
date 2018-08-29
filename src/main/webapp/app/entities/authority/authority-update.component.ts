@@ -21,6 +21,7 @@ export class AuthorityUpdateComponent implements OnInit {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ authority }) => {
             this.authority = authority;
+            console.log(authority, 'authority');
         });
         // function
         this.functions = [];
