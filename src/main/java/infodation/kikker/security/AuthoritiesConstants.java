@@ -6,6 +6,8 @@ package infodation.kikker.security;
 public final class AuthoritiesConstants {
 
     public static final String ADMIN = "ROLE_ADMIN";
+    
+    public static final String BO = "ROLE_BO";
 
     public static final String USER = "ROLE_USER";
 

@@ -3,13 +3,20 @@ package infodation.kikker.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import infodation.kikker.domain.Authority;
 import infodation.kikker.domain.Function;
+import infodation.kikker.domain.User;
+import infodation.kikker.repository.UserRepository;
+import infodation.kikker.security.AuthoritiesConstants;
+import infodation.kikker.security.SecurityUtils;
 import infodation.kikker.service.AuthorityService;
+import infodation.kikker.service.UserService;
 import infodation.kikker.web.rest.errors.BadRequestAlertException;
+import infodation.kikker.web.rest.errors.InternalServerErrorException;
 import infodation.kikker.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +39,11 @@ public class AuthorityResource {
     private static final String ENTITY_NAME = "authority";
 
     private final AuthorityService authorityService;
+    
+    private final UserService userService;
 
-    public AuthorityResource(AuthorityService authorityService) {
+    public AuthorityResource(UserService userService, AuthorityService authorityService) {
+    	this.userService = userService;
         this.authorityService = authorityService;
     }
 
@@ -46,6 +56,7 @@ public class AuthorityResource {
      */
     @PostMapping("/authorities")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<Authority> createAuthority(@Valid @RequestBody Authority authority) throws URISyntaxException {
         log.debug("REST request to save Authority : {}", authority);
         if (authority.getName() == null) {
@@ -68,6 +79,7 @@ public class AuthorityResource {
      */
     @PutMapping("/authorities")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<Authority> updateAuthority(@Valid @RequestBody Authority authority) throws URISyntaxException {
         log.debug("REST request to update Authority : {}", authority);
         if (authority.getName() == null) {
@@ -86,9 +98,26 @@ public class AuthorityResource {
      */
     @GetMapping("/authorities")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public List<Authority> getAllAuthorities() {
         log.debug("REST request to get all Authorities");
-        return authorityService.findAll();
+        final Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        if (!userLogin.isPresent()) {
+            throw new InternalServerErrorException("User could not be found");
+        }
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (!user.isPresent()) {
+            throw new InternalServerErrorException("User could not be found");
+        }
+        if(user.get().getAuthorities().stream().filter(au -> au.getName().equals(AuthoritiesConstants.ADMIN)).findFirst().isPresent())
+        {
+        	log.debug("REST request to get all Authorities with ROLE_ADMIN");
+        	return authorityService.findAll();
+        }
+        	
+        else{
+        	return authorityService.findAllByBo();
+        }
     }
 
     /**
@@ -99,6 +128,7 @@ public class AuthorityResource {
      */
     @GetMapping("/authorities/{id}")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<Authority> getAuthority(@PathVariable String id) {
         log.debug("REST request to get Authority : {}", id);
         Optional<Authority> authority = authorityService.findOne(id);
@@ -115,6 +145,7 @@ public class AuthorityResource {
      */
     @DeleteMapping("/authorities/{id}")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<Void> deleteAuthority(@PathVariable String id) {
         log.debug("REST request to delete Authority : {}", id);
         authorityService.delete(id);

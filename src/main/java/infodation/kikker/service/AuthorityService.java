@@ -24,6 +24,8 @@ public interface AuthorityService {
      * @return the list of entities
      */
     List<Authority> findAll();
+    
+    List<Authority> findAllByBo();
 
 
     /**

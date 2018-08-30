@@ -256,7 +256,7 @@ public class UserService {
     	Optional<User> u = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithOrganizationByLogin);
     	Optional<User> u2 = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     	u2.get().setOrganization(u.get().getOrganization());
-        return u2;//SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        return u2;
     }
     
 

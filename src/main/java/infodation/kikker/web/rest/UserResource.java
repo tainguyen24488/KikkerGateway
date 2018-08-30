@@ -89,7 +89,7 @@ public class UserResource {
      */
 	@PostMapping("/users")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
 
@@ -119,7 +119,7 @@ public class UserResource {
      */
     @PutMapping("/users")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
@@ -144,7 +144,7 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-//    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
@@ -156,7 +156,7 @@ public class UserResource {
      */
     @GetMapping("/users/authorities")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
@@ -166,7 +166,7 @@ public class UserResource {
      */
     @GetMapping("/users/organization")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+	@Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.BO})
     public List<Organization> getOrganization() {
         return userService.getOrganization();
     }

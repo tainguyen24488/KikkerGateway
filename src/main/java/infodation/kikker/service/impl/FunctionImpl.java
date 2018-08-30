@@ -5,7 +5,7 @@ import infodation.kikker.domain.Function;
 import infodation.kikker.repository.FunctionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +47,7 @@ public class FunctionImpl implements FunctionService {
     @Transactional(readOnly = true)
     public List<Function> findAll() {
         log.debug("Request to get all Functions");
-        return FunctionRepository.findAll();
+        return FunctionRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
     }
 
 

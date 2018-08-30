@@ -102,8 +102,8 @@ public class Authority implements Serializable {
     public String toString() {
         return "Authority{" +
             "name='" + name + '\'' +
-            ", functions='" + getFunctions() + "'" +
-            ", functionIds='" + getFunctionIds() + "'" +
+//            ", functions='" + getFunctions() + "'" +
+//            ", functionIds='" + getFunctionIds() + "'" +
             "}";
     }
 }

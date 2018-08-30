@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
 	
-//	@EntityGraph(attributePaths = "functions")
-//    List<Function> findAllByName(String name);
+	public List<Authority> findAllByOrderByNameAsc();
+	
+	public List<Authority> findByNameNotLike(String name);
 }

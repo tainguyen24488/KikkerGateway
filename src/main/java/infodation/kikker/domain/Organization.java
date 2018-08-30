@@ -41,11 +41,11 @@ public class Organization implements Serializable {
     private String house_nr_ext;
     
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "kikker_user_reseller",
-        joinColumns = {@JoinColumn(name = "reseller_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
+    @ManyToMany(mappedBy="organization", fetch = FetchType.EAGER)
+//    @JoinTable(
+//        name = "kikker_user_reseller",
+//        joinColumns = {@JoinColumn(name = "reseller_id", referencedColumnName = "id")},
+//        inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
 
     @BatchSize(size = 20)
     private Set<User> users = new HashSet<>();
@@ -140,14 +140,12 @@ public class Organization implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Kikker_organization{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-//            ", zipcode='" + getZipcode() + "'" +
-//            ", house_nr=" + getHouse_nr() +
-//            ", house_nr_ext='" + getHouse_nr_ext() + "'" +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "Organization [id=" + id + ", name=" + name + ", zipcode=" + zipcode + ", house_nr=" + house_nr
+				+ ", house_nr_ext=" + house_nr_ext + ", users=" + users + ", getUsers()=" + getUsers() + ", getId()="
+				+ getId() + ", getName()=" + getName() + ", getZipcode()=" + getZipcode() + ", getHouse_nr()="
+				+ getHouse_nr() + ", getHouse_nr_ext()=" + getHouse_nr_ext() + ", hashCode()=" + hashCode() + "]";
+	}
+
 }

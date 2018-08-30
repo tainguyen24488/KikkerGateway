@@ -6,10 +6,11 @@ import infodation.kikker.domain.Function;
 import infodation.kikker.domain.Organization;
 import infodation.kikker.repository.AuthorityRepository;
 import infodation.kikker.repository.FunctionRepository;
+import infodation.kikker.security.AuthoritiesConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,11 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Transactional(readOnly = true)
     public List<Authority> findAll() {
         log.debug("Request to get all Authorities");
-        return authorityRepository.findAll();
+        return authorityRepository.findAll(sortByNameAsc());
+    }
+    
+    private Sort sortByNameAsc() {
+        return new Sort(Sort.Direction.ASC, "name");
     }
 
 
@@ -93,4 +98,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         log.debug("Request to delete Authority : {}", id);
         authorityRepository.deleteById(id);
     }
+
+	@Override
+   @Transactional(readOnly = true)
+	public List<Authority> findAllByBo() {
+		// TODO Auto-generated method stub
+		return authorityRepository.findByNameNotLike(AuthoritiesConstants.ADMIN);
+	}
 }
